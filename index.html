@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <title>峴港 5天4夜 慢活行程 App</title>
+  <title>峴港 5天4夜 協作行程 App</title>
   <style>
     :root {
       --primary: #1F4E5F;
@@ -40,7 +40,7 @@
       background-color: var(--bg);
       color: var(--text);
       line-height: 1.6;
-      padding-bottom: 48px;
+      padding-bottom: 56px;
     }
 
     .app-container {
@@ -49,35 +49,77 @@
       position: relative;
     }
 
-    /* Hidden Radios for Pure CSS Tabs */
-    .tab-radio {
-      position: absolute;
-      opacity: 0;
-      width: 0;
-      height: 0;
-      pointer-events: none;
-    }
-
-    /* Header */
     header {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
       color: #FFFFFF;
-      padding: 24px 20px 20px;
+      padding: 22px 20px 18px;
       border-bottom-left-radius: 20px;
       border-bottom-right-radius: 20px;
       box-shadow: 0 4px 16px rgba(31, 78, 95, 0.18);
     }
 
     header h1 {
-      font-size: 1.45rem;
+      font-size: 1.4rem;
       font-weight: 700;
       letter-spacing: 0.5px;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     header p {
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       opacity: 0.9;
+    }
+
+    /* Sync Toolbar */
+    .sync-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 16px;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      background: #EAF0F2;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .sync-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 600;
+    }
+
+    .sync-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mini-btn {
+      border: 1px solid #CBD5E1;
+      background: #FFFFFF;
+      color: var(--primary);
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .mini-btn:hover {
+      background: #F1F5F9;
+    }
+
+    .mini-btn.primary-btn {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-color: var(--primary);
     }
 
     /* Sticky Tabs */
@@ -88,7 +130,7 @@
       background: rgba(244, 247, 248, 0.96);
       -webkit-backdrop-filter: blur(8px);
       backdrop-filter: blur(8px);
-      padding: 12px 16px;
+      padding: 10px 16px;
       border-bottom: 1px solid var(--border);
     }
 
@@ -106,45 +148,24 @@
 
     .tab-btn {
       flex: 0 0 auto;
-      display: inline-block;
       border: 1px solid var(--border);
       background: var(--card);
       color: var(--text-muted);
-      padding: 8px 14px;
+      padding: 7px 14px;
       border-radius: 999px;
-      font-size: 0.86rem;
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
-      user-select: none;
-      -webkit-user-select: none;
       transition: all 0.18s ease;
     }
 
-    /* Active Tab Styling via Pure CSS */
-    #tab-all:checked ~ .tabs-wrapper label[for="tab-all"],
-    #tab-stay:checked ~ .tabs-wrapper label[for="tab-stay"],
-    #tab-day1:checked ~ .tabs-wrapper label[for="tab-day1"],
-    #tab-day2:checked ~ .tabs-wrapper label[for="tab-day2"],
-    #tab-day3:checked ~ .tabs-wrapper label[for="tab-day3"],
-    #tab-day4:checked ~ .tabs-wrapper label[for="tab-day4"],
-    #tab-day5:checked ~ .tabs-wrapper label[for="tab-day5"] {
+    .tab-btn.active {
       background: var(--primary);
       color: #FFFFFF;
       border-color: var(--primary);
       box-shadow: 0 2px 8px rgba(31, 78, 95, 0.25);
     }
 
-    /* Card Filtering via Pure CSS */
-    #tab-stay:checked ~ main .card:not(.card-stay),
-    #tab-day1:checked ~ main .card:not(.card-day1),
-    #tab-day2:checked ~ main .card:not(.card-day2),
-    #tab-day3:checked ~ main .card:not(.card-day3),
-    #tab-day4:checked ~ main .card:not(.card-day4),
-    #tab-day5:checked ~ main .card:not(.card-day5) {
-      display: none;
-    }
-
-    /* Content Area */
     main {
       padding: 16px;
       display: flex;
@@ -160,7 +181,10 @@
       border: 1px solid var(--border);
     }
 
-    /* Day Header */
+    .card.hidden {
+      display: none;
+    }
+
     .day-header {
       display: flex;
       align-items: center;
@@ -181,34 +205,44 @@
     }
 
     .day-title {
-      font-size: 1.08rem;
+      font-size: 1.06rem;
       font-weight: 700;
       color: var(--primary);
     }
 
     .summary-text {
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       color: #334155;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       background: #F8FAFC;
       padding: 10px 12px;
       border-radius: 10px;
       border-left: 3px solid var(--primary-light);
     }
 
-    /* Section Labels */
     .section-label {
       font-size: 0.82rem;
       font-weight: 700;
       color: var(--text-muted);
-      letter-spacing: 0.5px;
+      letter-spacing: 0.4px;
       margin: 14px 0 8px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: space-between;
+      gap: 8px;
     }
 
-    /* Compact Hotel Shortlist (24 items) */
+    .filter-toggle {
+      font-size: 0.74rem;
+      font-weight: 500;
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    /* Compact Hotel Shortlist */
     .hotel-list {
       display: flex;
       flex-direction: column;
@@ -237,14 +271,38 @@
       background: #FAFBFD;
     }
 
-    .hotel-name-link {
+    .hotel-row.status-final {
+      background: #FFFBEB !important;
+      border-left: 3px solid #D97706;
+    }
+
+    .hotel-row.status-like {
+      background: #F0FDF4 !important;
+    }
+
+    .hotel-row.status-drop {
+      opacity: 0.48;
+    }
+
+    .hotel-row.status-drop .hotel-text {
+      text-decoration: line-through;
+    }
+
+    .hotel-left {
       flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .hotel-name-link {
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
       text-decoration: none;
       color: var(--booking);
-      min-width: 0;
+      flex-wrap: wrap;
     }
 
     .hotel-name-link:hover .hotel-text {
@@ -253,7 +311,7 @@
 
     .hotel-idx {
       flex-shrink: 0;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
       color: var(--text-muted);
       background: #EDF2F7;
@@ -266,8 +324,36 @@
       word-break: break-word;
     }
 
+    .status-pill {
+      font-size: 0.66rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .status-pill.final {
+      background: #FEF3C7;
+      color: #92400E;
+    }
+
+    .status-pill.like {
+      background: #DCFCE7;
+      color: #166534;
+    }
+
+    .status-pill.drop {
+      background: #E2E8F0;
+      color: #64748B;
+    }
+
+    .hotel-note {
+      font-size: 0.72rem;
+      color: #64748B;
+      padding-left: 26px;
+    }
+
     .booking-tag {
-      flex-shrink: 0;
       font-size: 0.68rem;
       color: #006CE4;
       opacity: 0.85;
@@ -287,11 +373,7 @@
       white-space: nowrap;
     }
 
-    .hotel-map-btn:hover {
-      background: var(--map-hover);
-    }
-
-    /* Clickable Map Links & Inline Spot Notes */
+    /* Spots & Food Links */
     .place-list {
       display: flex;
       flex-direction: column;
@@ -330,10 +412,6 @@
       border-bottom: none;
     }
 
-    .map-link.spot:hover {
-      background: var(--map-hover);
-    }
-
     .spot-note {
       background: var(--accent-soft);
       color: #5C3A16;
@@ -352,18 +430,10 @@
       border: 1px solid #F9DFC2;
     }
 
-    .map-link.food:hover {
-      background: var(--food-hover);
-    }
-
     .map-link.cafe {
       background: var(--cafe-bg);
       color: var(--cafe-text);
       border: 1px solid var(--cafe-border);
-    }
-
-    .map-link.cafe:hover {
-      background: var(--cafe-hover);
     }
 
     .map-link-info {
@@ -395,19 +465,10 @@
       gap: 4px;
     }
 
-    .spot .nav-chip {
-      color: var(--primary);
-    }
+    .spot .nav-chip { color: var(--primary); }
+    .food .nav-chip { color: #B45309; }
+    .cafe .nav-chip { color: var(--cafe-text); }
 
-    .food .nav-chip {
-      color: #B45309;
-    }
-
-    .cafe .nav-chip {
-      color: var(--cafe-text);
-    }
-
-    /* Transport & Notes */
     .info-box {
       background: #F8FAFC;
       border: 1px solid var(--border);
@@ -417,12 +478,12 @@
       color: #334155;
     }
 
-    .info-box ul {
+    .info-box ul, .note-box ul {
       padding-left: 18px;
       margin: 0;
     }
 
-    .info-box li + li {
+    .info-box li + li, .note-box li + li {
       margin-top: 4px;
     }
 
@@ -435,15 +496,6 @@
       color: #5C3A16;
     }
 
-    .note-box ul {
-      padding-left: 18px;
-      margin: 0;
-    }
-
-    .note-box li + li {
-      margin-top: 5px;
-    }
-
     .stay-title {
       font-size: 1.05rem;
       font-weight: 700;
@@ -451,46 +503,401 @@
       margin-bottom: 8px;
     }
 
+    /* Setup Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      max-width: 480px;
+      width: 100%;
+      padding: 20px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.22);
+    }
+
+    .modal-card h3 {
+      font-size: 1.05rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .modal-card p {
+      font-size: 0.83rem;
+      color: #475569;
+      margin-bottom: 10px;
+    }
+
+    .modal-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #CBD5E1;
+      border-radius: 10px;
+      font-size: 0.86rem;
+      margin-bottom: 10px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .share-box {
+      margin-top: 12px;
+      padding: 10px;
+      background: #F1F5F9;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      color: #334155;
+      display: none;
+    }
+
+    .share-box.show {
+      display: block;
+    }
+
     footer {
       text-align: center;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--text-muted);
-      margin-top: 20px;
+      margin-top: 16px;
       padding: 0 16px;
     }
   </style>
 </head>
 <body>
   <div class="app-container">
-    <!-- Pure CSS Radio Controls -->
-    <input type="radio" name="day-filter" id="tab-all" class="tab-radio" checked />
-    <input type="radio" name="day-filter" id="tab-stay" class="tab-radio" />
-    <input type="radio" name="day-filter" id="tab-day1" class="tab-radio" />
-    <input type="radio" name="day-filter" id="tab-day2" class="tab-radio" />
-    <input type="radio" name="day-filter" id="tab-day3" class="tab-radio" />
-    <input type="radio" name="day-filter" id="tab-day4" class="tab-radio" />
-    <input type="radio" name="day-filter" id="tab-day5" class="tab-radio" />
-
     <header>
       <h1>🇻🇳 峴港 5天4夜 慢活行程</h1>
       <p>點擊景點／餐廳開啟 Google Maps・點擊飯店開啟 Booking.com</p>
     </header>
 
-    <div class="tabs-wrapper">
-      <div class="tabs">
-        <label for="tab-all" class="tab-btn">全部總覽</label>
-        <label for="tab-stay" class="tab-btn">住宿＆交通</label>
-        <label for="tab-day1" class="tab-btn">Day 1</label>
-        <label for="tab-day2" class="tab-btn">Day 2</label>
-        <label for="tab-day3" class="tab-btn">Day 3</label>
-        <label for="tab-day4" class="tab-btn">Day 4</label>
-        <label for="tab-day5" class="tab-btn">Day 5</label>
+    <div class="sync-bar">
+      <span class="sync-status" id="syncStatus">📄 內建預設資料</span>
+      <div class="sync-actions">
+        <a id="editSheetLink" class="mini-btn" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">📝 編輯試算表</a>
+        <button class="mini-btn" id="btnRefresh" type="button">🔄 更新</button>
+        <button class="mini-btn primary-btn" id="btnSetup" type="button">⚙️ 連結試算表</button>
       </div>
     </div>
 
-    <main>
-      <!-- 住宿與交通總覽 -->
-      <section class="card card-stay">
+    <div class="tabs-wrapper">
+      <div class="tabs" id="dayTabs"></div>
+    </div>
+
+    <main id="appMain"></main>
+
+    <footer>
+      峴港 5天4夜協作行程手冊・試算表修改後按「🔄 更新」即同步最新內容
+    </footer>
+  </div>
+
+  <!-- Google Sheet Setup Modal -->
+  <div class="modal-backdrop" id="setupModal">
+    <div class="modal-card">
+      <h3>⚙️ 連結共用 Google 試算表</h3>
+      <p>
+        1. 將 <strong>DaNang_5Days_Collab_Sheet.xlsx</strong> 上傳至 Google 雲端硬碟並以「Google 試算表」開啟。<br />
+        2. 點右上角「共用」➔ 權限改為「<strong>知道連結的任何人皆可編輯</strong>」。<br />
+        3. 複製該試算表的網址貼在下方，按儲存即可同步！
+      </p>
+      <input type="text" id="sheetUrlInput" class="modal-input" placeholder="貼上 Google 試算表網址（https://docs.google.com/spreadsheets/d/...）" />
+      <div class="modal-actions">
+        <button type="button" class="mini-btn" id="btnCancelModal">取消</button>
+        <button type="button" class="mini-btn" id="btnClearSheet">恢復預設</button>
+        <button type="button" class="mini-btn primary-btn" id="btnSaveSheet">儲存並同步</button>
+      </div>
+      <div class="share-box" id="shareBox">
+        <strong>🎉 傳給旅伴的專屬協作網址：</strong>
+        <div id="shareUrlText" style="word-break:break-all; margin: 6px 0; color: #0F172A;"></div>
+        <button type="button" class="mini-btn primary-btn" id="btnCopyShare">📋 複製網址傳給旅伴</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 【選填】如果你想把試算表網址直接寫死在網頁裡，貼在下面引號中即可：
+    // 範例：const DEFAULT_SHEET_URL = "https://docs.google.com/spreadsheets/d/你的試算表ID/edit";
+    // =========================================================================
+    const DEFAULT_SHEET_URL = "";
+
+    const DEFAULT_HOTELS = [{"id": "01", "name": "Awaken Da Nang Hotel", "status": "候選", "note": "", "query": "Awaken Da Nang Hotel"}, {"id": "02", "name": "TUI BLUE Han River", "status": "候選", "note": "", "query": "TUI BLUE Han River Da Nang"}, {"id": "03", "name": "N House Apartment Danang Beach", "status": "候選", "note": "", "query": "N House Apartment Danang Beach"}, {"id": "04", "name": "Chi House Danang Hotel and Apartment", "status": "候選", "note": "", "query": "Chi House Danang Hotel and Apartment"}, {"id": "05", "name": "Casa Rosa Apartment", "status": "候選", "note": "", "query": "Casa Rosa Apartment Da Nang"}, {"id": "06", "name": "Seascape Holiday Home", "status": "候選", "note": "", "query": "Seascape Holiday Home Da Nang"}, {"id": "07", "name": "H&M Tropical Stay", "status": "候選", "note": "", "query": "H&M Tropical Stay Da Nang"}, {"id": "08", "name": "El Mulato Hotel & Apartment", "status": "候選", "note": "", "query": "El Mulato Hotel & Apartment Da Nang"}, {"id": "09", "name": "PHUC LONG LUXURY Hotel Danang", "status": "候選", "note": "", "query": "PHUC LONG LUXURY Hotel Danang"}, {"id": "10", "name": "潭屋別墅酒店（Tam House Villa Hotel）", "status": "候選", "note": "", "query": "Tam House Villa Hotel Da Nang"}, {"id": "11", "name": "PAMA Boutique Hotel & Bistro", "status": "候選", "note": "", "query": "PAMA Boutique Hotel & Bistro Da Nang"}, {"id": "12", "name": "Salmalia Boutique Hotel & Spa", "status": "候選", "note": "", "query": "Salmalia Boutique Hotel & Spa Da Nang"}, {"id": "13", "name": "DLG 峴港酒店（DLG Hotel Danang）", "status": "候選", "note": "", "query": "DLG Hotel Danang"}, {"id": "14", "name": "Animor Green Home Villa Da Nang", "status": "候選", "note": "", "query": "Animor Green Home Villa Da Nang"}, {"id": "15", "name": "Pavilion Hotel Da Nang", "status": "候選", "note": "", "query": "Pavilion Hotel Da Nang"}, {"id": "16", "name": "Ocean Garden Boutique Da Nang by Haviland", "status": "候選", "note": "", "query": "Ocean Garden Boutique Da Nang by Haviland"}, {"id": "17", "name": "Ruby Star Da Nang - Central My Khe Beach", "status": "候選", "note": "", "query": "Ruby Star Da Nang Central My Khe Beach"}, {"id": "18", "name": "White Sand Boutique Hotel", "status": "候選", "note": "", "query": "White Sand Boutique Hotel Da Nang"}, {"id": "19", "name": "Century Hotel Da Nang", "status": "候選", "note": "", "query": "Century Hotel Da Nang"}, {"id": "20", "name": "The Dream Suite", "status": "候選", "note": "", "query": "The Dream Suite Da Nang"}, {"id": "21", "name": "Canvas Danang Beach Hotel", "status": "候選", "note": "", "query": "Canvas Danang Beach Hotel"}, {"id": "22", "name": "Sharon Hotel and Apartment", "status": "候選", "note": "", "query": "Sharon Hotel and Apartment Da Nang"}, {"id": "23", "name": "Royal Lotus Hotel Danang", "status": "候選", "note": "", "query": "Royal Lotus Hotel Danang"}, {"id": "24", "name": "Maximilan Danang Beach Hotel", "status": "候選", "note": "", "query": "Maximilan Danang Beach Hotel"}];
+    const DEFAULT_ITINERARY = [{"day": "Day 1", "title": "抵達、訂製奧黛與海濱夜景", "summary": "中午抵達放完行李後，下午直奔漢市場訂製奧黛與採買；等待取件期間步行至 APEC 雕塑公園拍照，傍晚回美溪沙灘踩沙看海，晚間欣賞龍橋夜景。", "type": "景點", "name": "漢市場（Cho Han）", "desc": "二樓量身訂製奧黛、採買當地伴手禮", "note": "🛍️ 採買／活動備註：推薦找「143 號攤位」買腰果與芒果乾；二樓量身訂製奧黛約 2 小時可取件，隔天起即可穿去拍照。", "query": "Han Market Da Nang Vietnam"}, {"day": "Day 1", "title": "抵達、訂製奧黛與海濱夜景", "summary": "", "type": "景點", "name": "APEC 雕塑公園", "desc": "純白流線建築美拍，等待奧黛製作時順遊", "note": "", "query": "APEC Park Da Nang Vietnam"}, {"day": "Day 1", "title": "抵達、訂製奧黛與海濱夜景", "summary": "", "type": "景點", "name": "美溪沙灘（My Khe Beach）", "desc": "傍晚踩沙看海放鬆", "note": "", "query": "My Khe Beach Da Nang Vietnam"}, {"day": "Day 1", "title": "抵達、訂製奧黛與海濱夜景", "summary": "", "type": "景點", "name": "峴港龍橋（Dragon Bridge）", "desc": "欣賞漢江沿岸夜景", "note": "🔥 推薦活動：週末（六、日）21:00 有噴火噴水秀，建議提早卡位。", "query": "Dragon Bridge Da Nang Vietnam"}, {"day": "Day 1", "title": "抵達、訂製奧黛與海濱夜景", "summary": "", "type": "交通", "name": "機場至飯店：Grab 約 15 分鐘", "desc": "", "note": "", "query": ""}, {"day": "Day 1", "title": "抵達、訂製奧黛與海濱夜景", "summary": "", "type": "交通", "name": "飯店至漢市場／龍橋：Grab 約 8–12 分鐘", "desc": "", "note": "", "query": ""}, {"day": "Day 1", "title": "抵達、訂製奧黛與海濱夜景", "summary": "", "type": "正餐／餐廳", "name": "Pizza 4P's Hoàng Văn Thụ", "desc": "超人氣自製起司窯烤披薩（建議先訂位）", "note": "", "query": "Pizza 4P's Hoang Van Thu Da Nang"}, {"day": "Day 1", "title": "抵達、訂製奧黛與海濱夜景", "summary": "", "type": "正餐／餐廳", "name": "Bếp Cuốn Đà Nẵng", "desc": "精緻越南家常菜、越式生春捲", "note": "", "query": "Bep Cuon Da Nang"}, {"day": "Day 1", "title": "抵達、訂製奧黛與海濱夜景", "summary": "", "type": "咖啡廳／點心", "name": "Út Tịch Café", "desc": "復古懷舊越式風格咖啡", "note": "", "query": "Ut Tich Cafe Da Nang"}, {"day": "Day 1", "title": "抵達、訂製奧黛與海濱夜景", "summary": "", "type": "咖啡廳／點心", "name": "Cộng Cà Phê - Bạch Đằng", "desc": "人氣招牌椰子咖啡、漢江河岸景觀", "note": "", "query": "Cong Ca Phe Bach Dang Da Nang"}, {"day": "Day 2", "title": "雲端歐風與海濱海鮮夜", "summary": "上午搭單軌纜車登頂，造訪黃金佛手橋、法國村與空中花園（停留約 5–6 小時）；傍晚下山回美溪沙灘享用活海鮮，晚間可回飯店泳池休息或順路逛山茶夜市。", "type": "景點", "name": "巴拿山太陽世界（Sun World Ba Na Hills）", "desc": "黃金佛手橋、法國村、空中花園與酒窖", "note": "✨ 推薦活動：建議 08:30 前出發避開團客，穿奧黛在法國村拍照非常出片。", "query": "Sun World Ba Na Hills Da Nang Vietnam"}, {"day": "Day 2", "title": "雲端歐風與海濱海鮮夜", "summary": "", "type": "景點", "name": "山茶夜市（Chợ Đêm Sơn Trà，選配）", "desc": "鄰近龍橋的在地觀光夜市", "note": "🛍️ 採買／活動備註：有許多紀念品、藤編小物、炭烤小吃與熱帶水果攤可邊吃邊逛。", "query": "Son Tra Night Market Da Nang Vietnam"}, {"day": "Day 2", "title": "雲端歐風與海濱海鮮夜", "summary": "", "type": "交通", "name": "飯店至巴拿山：Grab 或包車來回，單趟約 45 分鐘", "desc": "", "note": "", "query": ""}, {"day": "Day 2", "title": "雲端歐風與海濱海鮮夜", "summary": "", "type": "交通", "name": "海灘周邊／夜市：Grab 約 5–10 分鐘", "desc": "", "note": "", "query": ""}, {"day": "Day 2", "title": "雲端歐風與海濱海鮮夜", "summary": "", "type": "正餐／餐廳", "name": "巴拿山園區自助餐（Arapang / Beer Plaza）", "desc": "園區內用餐最方便省時", "note": "", "query": "Beer Plaza Ba Na Hills"}, {"day": "Day 2", "title": "雲端歐風與海濱海鮮夜", "summary": "", "type": "正餐／餐廳", "name": "Hải Sản Bé Mặn", "desc": "美溪沙灘超人氣平價活海鮮熱炒", "note": "", "query": "Hai San Be Man Da Nang"}, {"day": "Day 2", "title": "雲端歐風與海濱海鮮夜", "summary": "", "type": "正餐／餐廳", "name": "Hải Sản Năm Đảnh", "desc": "巷弄隱密高 CP 值海鮮", "note": "", "query": "Hai San Nam Danh Da Nang"}, {"day": "Day 2", "title": "雲端歐風與海濱海鮮夜", "summary": "", "type": "咖啡廳／點心", "name": "Chợ Đêm Sơn Trà（山茶夜市小吃）", "desc": "越式烤米紙薄餅、炭烤海鮮點心與現打果汁", "note": "", "query": "Son Tra Night Market Da Nang"}, {"day": "Day 2", "title": "雲端歐風與海濱海鮮夜", "summary": "", "type": "咖啡廳／點心", "name": "43 Factory Coffee Roaster", "desc": "美溪沙灘周邊人氣質感精品手沖咖啡館", "note": "", "query": "43 Factory Coffee Roaster Da Nang"}, {"day": "Day 3", "title": "千年古蹟與海邊微醺放空", "summary": "上午探訪世界遺產占婆紅磚遺跡；中午回市區用餐小憩，下午在海灘俱樂部躺椅吹海風看日落，晚上漫步充滿異國風情的安上特區逛小店、吃晚餐或小酌。", "type": "景點", "name": "美山聖地（My Son Sanctuary）", "desc": "世界文化遺產、占婆王國紅磚古蹟群", "note": "✨ 推薦活動：園區遮蔽較少，建議 08:00 出發避開正午酷熱；園區內定時有占婆傳統舞蹈表演。", "query": "My Son Sanctuary Quang Nam Vietnam"}, {"day": "Day 3", "title": "千年古蹟與海邊微醺放空", "summary": "", "type": "景點", "name": "海景 Beach Club（Esco Beach）", "desc": "午後海灘躺椅放空、吹海風看日落", "note": "", "query": "Esco Beach Bar Lounge Da Nang"}, {"day": "Day 3", "title": "千年古蹟與海邊微醺放空", "summary": "", "type": "景點", "name": "安上特區（An Thuong）", "desc": "異國風情街道散策、文青小店與餐酒館", "note": "", "query": "An Thuong Tourist Street Da Nang"}, {"day": "Day 3", "title": "千年古蹟與海邊微醺放空", "summary": "", "type": "景點", "name": "漢江遊船（Han River Cruise，晚間選配）", "desc": "吹微風欣賞漢江兩岸燈火夜景", "note": "✨ 晚間選配：若晚上不想跑酒吧，可改搭漢江遊船悠閒賞夜景。", "query": "Han River Port Da Nang Cruise"}, {"day": "Day 3", "title": "千年古蹟與海邊微醺放空", "summary": "", "type": "交通", "name": "飯店至美山聖地：建議半日包車來回（單趟約 65–70 分鐘）", "desc": "", "note": "", "query": ""}, {"day": "Day 3", "title": "千年古蹟與海邊微醺放空", "summary": "", "type": "交通", "name": "下午市區各點：徒步或 Grab 均在 10 分鐘內", "desc": "", "note": "", "query": ""}, {"day": "Day 3", "title": "千年古蹟與海邊微醺放空", "summary": "", "type": "正餐／餐廳", "name": "Mì Quảng Bà Mua", "desc": "道地峴港特色廣南麵", "note": "", "query": "Mi Quang Ba Mua Da Nang"}, {"day": "Day 3", "title": "千年古蹟與海邊微醺放空", "summary": "", "type": "正餐／餐廳", "name": "Cơm Nhà Linh", "desc": "古早味越南家庭料理砂鍋飯", "note": "", "query": "Com Nha Linh Da Nang"}, {"day": "Day 3", "title": "千年古蹟與海邊微醺放空", "summary": "", "type": "咖啡廳／點心", "name": "Roots Plant-based Cafe", "desc": "安上特區健康果昔碗、早午餐與輕食點心", "note": "", "query": "Roots Plant-based Cafe Da Nang"}, {"day": "Day 3", "title": "千年古蹟與海邊微醺放空", "summary": "", "type": "咖啡廳／點心", "name": "Esco Beach Bar Lounge", "desc": "海灘躺椅調酒、下午茶與輕食", "note": "", "query": "Esco Beach Bar Lounge Da Nang"}, {"day": "Day 3", "title": "千年古蹟與海邊微醺放空", "summary": "", "type": "咖啡廳／點心", "name": "The Craftsman Cocktail Bar", "desc": "高質感隱密雞尾酒酒吧", "note": "", "query": "The Craftsman Cocktail Bar Da Nang"}, {"day": "Day 4", "title": "山海全景、椰林桶船與燈籠古城", "summary": "上午前往山茶半島遠眺峴港灣與巨型白玉觀音；中午沿海岸線往南至迦南島搭竹簍船；下午進會安古鎮喝咖啡避暑、逛日本橋與福建會館，入夜搭木船放水燈。", "type": "景點", "name": "山茶半島・靈應寺（Linh Ung Pagoda）", "desc": "巨型白玉觀音像、俯瞰整座月牙形峴港灣", "note": "", "query": "Linh Ung Pagoda Son Tra Peninsula Da Nang"}, {"day": "Day 4", "title": "山海全景、椰林桶船與燈籠古城", "summary": "", "type": "景點", "name": "迦南島椰林桶船（Cam Thanh）", "desc": "體驗水椰林竹簍船與水上捕蟹", "note": "✨ 推薦活動：搭桶船可請船夫表演水上旋轉（怕暈可提前告知船夫）。", "query": "Bay Mau Coconut Forest Cam Thanh Hoi An"}, {"day": "Day 4", "title": "山海全景、椰林桶船與燈籠古城", "summary": "", "type": "景點", "name": "會安古鎮（Hoi An Ancient Town）", "desc": "日本橋、福建會館與燈籠古街夜景", "note": "🏮 推薦活動＆採買：入夜後必搭手搖木船在秋盆河放水燈祈福；古城內適合採買手工竹編包、藤編杯墊與特色布藝燈籠。", "query": "Hoi An Ancient Town Vietnam"}, {"day": "Day 4", "title": "山海全景、椰林桶船與燈籠古城", "summary": "", "type": "交通", "name": "建議全天包車（或分段 Grab）：飯店 ➔ 靈應寺（20分）➔ 迦南島（50分）➔ 會安（15分）➔ 飯店（40分）", "desc": "", "note": "", "query": ""}, {"day": "Day 4", "title": "山海全景、椰林桶船與燈籠古城", "summary": "", "type": "正餐／餐廳", "name": "Quán Ăn Cô Ba", "desc": "道地會安特色料理", "note": "", "query": "Quan An Co Ba Hoi An"}, {"day": "Day 4", "title": "山海全景、椰林桶船與燈籠古城", "summary": "", "type": "正餐／餐廳", "name": "Morning Glory Original", "desc": "經典會安高樓麵（Cao Lau）、白玫瑰炸餛飩", "note": "", "query": "Morning Glory Original Hoi An"}, {"day": "Day 4", "title": "山海全景、椰林桶船與燈籠古城", "summary": "", "type": "咖啡廳／點心", "name": "Madam Khánh - The Banh Mi Queen", "desc": "會安天花板級越式法國麵包（點心／輕食）", "note": "", "query": "Madam Khanh The Banh Mi Queen Hoi An"}, {"day": "Day 4", "title": "山海全景、椰林桶船與燈籠古城", "summary": "", "type": "咖啡廳／點心", "name": "Faifo Coffee", "desc": "古城屋頂露台景觀咖啡", "note": "", "query": "Faifo Coffee Hoi An"}, {"day": "Day 4", "title": "山海全景、椰林桶船與燈籠古城", "summary": "", "type": "咖啡廳／點心", "name": "Mot Hoi An", "desc": "人氣清爽消暑蓮花草本茶", "note": "", "query": "Mot Hoi An"}, {"day": "Day 5", "title": "最後採購與歸途", "summary": "悠閒享用飯店早餐退房，前往樂天超市進行最後伴手禮補貨，結束後直接搭車前往機場搭機返程。", "type": "景點", "name": "樂天超市（Lotte Mart Da Nang）", "desc": "返台前最後伴手禮一站式採購", "note": "🛍️ 採買建議：必買 Legend／G7 咖啡、綠豆糕、Vifon 河粉泡麵、腰果與果乾；商場內提供免費紙箱可打包托運。", "query": "Lotte Mart Da Nang Vietnam"}, {"day": "Day 5", "title": "最後採購與歸途", "summary": "", "type": "景點", "name": "峴港國際機場（DAD）", "desc": "搭機返程", "note": "", "query": "Da Nang International Airport"}, {"day": "Day 5", "title": "最後採購與歸途", "summary": "", "type": "交通", "name": "飯店至樂天超市：Grab 約 12 分鐘", "desc": "", "note": "", "query": ""}, {"day": "Day 5", "title": "最後採購與歸途", "summary": "", "type": "交通", "name": "樂天超市至機場：Grab 約 15 分鐘", "desc": "", "note": "", "query": ""}, {"day": "Day 5", "title": "最後採購與歸途", "summary": "", "type": "正餐／餐廳", "name": "Phở Bắc Hải Đài Trang", "desc": "湯頭清甜道地北越牛腩河粉", "note": "", "query": "Pho Bac Hai Da Nang"}, {"day": "Day 5", "title": "最後採購與歸途", "summary": "", "type": "咖啡廳／點心", "name": "Highlands Coffee", "desc": "越南連鎖招牌金蓮子茶、冰滴咖啡與甜點", "note": "", "query": "Highlands Coffee Lotte Mart Da Nang"}];
+
+    // localStorage 在部分 App 內建瀏覽器（如 LINE）可能被禁用，包一層避免整頁壞掉
+    const safeStore = {
+      get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+      set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+      remove(k) { try { localStorage.removeItem(k); } catch (e) {} }
+    };
+
+    let currentFilter = "all";
+    let hideDroppedHotels = false;
+    let stateHotels = DEFAULT_HOTELS;
+    let stateItinerary = DEFAULT_ITINERARY;
+
+    function gmapUrl(q) {
+      return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q);
+    }
+
+    function bookingUrl(q) {
+      return "https://www.booking.com/searchresults.zh-tw.html?ss=" + encodeURIComponent(q);
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function extractSheetId(input) {
+      if (!input) return "";
+      const trimmed = input.trim();
+      const match = trimmed.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+      if (match) return match[1];
+      if (/^[a-zA-Z0-9-_]{20,}$/.test(trimmed)) return trimmed;
+      return "";
+    }
+
+    function getActiveSheetId() {
+      const params = new URLSearchParams(window.location.search);
+      const fromParam = extractSheetId(params.get("sheet") || "");
+      if (fromParam) return fromParam;
+      const fromStorage = extractSheetId(safeStore.get("danang_sheet_url") || "");
+      if (fromStorage) return fromStorage;
+      return extractSheetId(DEFAULT_SHEET_URL);
+    }
+
+    // RFC-4180 CSV parser supporting quoted fields & embedded newlines
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let field = "";
+      let inQuotes = false;
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        const next = text[i + 1];
+        if (inQuotes) {
+          if (ch === '"' && next === '"') {
+            field += '"';
+            i++;
+          } else if (ch === '"') {
+            inQuotes = false;
+          } else {
+            field += ch;
+          }
+        } else {
+          if (ch === '"') {
+            inQuotes = true;
+          } else if (ch === ',') {
+            row.push(field.trim());
+            field = "";
+          } else if (ch === '\r' && next === '\n') {
+            row.push(field.trim());
+            rows.push(row);
+            row = [];
+            field = "";
+            i++;
+          } else if (ch === '\n' || ch === '\r') {
+            row.push(field.trim());
+            rows.push(row);
+            row = [];
+            field = "";
+          } else {
+            field += ch;
+          }
+        }
+      }
+      if (field.length > 0 || row.length > 0) {
+        row.push(field.trim());
+        rows.push(row);
+      }
+      return rows.filter(r => r.some(cell => cell !== ""));
+    }
+
+    async function fetchSheetTab(sheetId, tabName) {
+      const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tabName)}&_=${Date.now()}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("無法讀取分頁：" + tabName);
+      const text = await res.text();
+      if (text.trim().startsWith("<!DOCTYPE html") || text.trim().startsWith("<html")) {
+        throw new Error("試算表權限未開啟「知道連結的任何人皆可檢視／編輯」");
+      }
+      return parseCSV(text);
+    }
+
+    function rowsToObjects(rows) {
+      if (rows.length < 2) return [];
+      const headers = rows[0];
+      return rows.slice(1).map(r => {
+        const obj = {};
+        headers.forEach((h, idx) => { obj[h.trim()] = (r[idx] || "").trim(); });
+        return obj;
+      });
+    }
+
+    async function syncFromGoogleSheet() {
+      const sheetId = getActiveSheetId();
+      const statusEl = document.getElementById("syncStatus");
+      const editLink = document.getElementById("editSheetLink");
+
+      if (!sheetId) {
+        statusEl.textContent = "📄 內建預設資料（尚未連結試算表）";
+        editLink.style.display = "none";
+        stateHotels = DEFAULT_HOTELS;
+        stateItinerary = DEFAULT_ITINERARY;
+        renderApp();
+        return;
+      }
+
+      editLink.href = `https://docs.google.com/spreadsheets/d/${sheetId}/edit`;
+      editLink.style.display = "inline-flex";
+      statusEl.textContent = "⏳ 正在同步 Google 試算表...";
+
+      try {
+        const [itRows, hotelRows] = await Promise.all([
+          fetchSheetTab(sheetId, "每日行程"),
+          fetchSheetTab(sheetId, "飯店清單")
+        ]);
+
+        const parsedIt = rowsToObjects(itRows)
+          .filter(r => r["天數"] && r["名稱"])
+          .map(r => ({
+            day: r["天數"],
+            title: r["當日標題"] || "",
+            summary: r["當日概要"] || "",
+            type: r["類型"] || "景點",
+            name: r["名稱"],
+            desc: r["說明"] || "",
+            note: r["備註"] || "",
+            query: r["搜尋關鍵字"] || (r["名稱"] + " Da Nang Vietnam")
+          }));
+
+        const parsedHotels = rowsToObjects(hotelRows)
+          .filter(r => r["飯店名稱"])
+          .map((r, i) => ({
+            id: r["編號"] ? String(r["編號"]).padStart(2, "0") : String(i + 1).padStart(2, "0"),
+            name: r["飯店名稱"],
+            status: r["狀態"] || "候選",
+            note: r["備註"] || "",
+            query: r["搜尋關鍵字"] || (r["飯店名稱"] + " Da Nang")
+          }));
+
+        if (parsedIt.length > 0) stateItinerary = parsedIt;
+        if (parsedHotels.length > 0) stateHotels = parsedHotels;
+
+        const now = new Date();
+        const hhmm = String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
+        statusEl.textContent = `🟢 已同步試算表（${hhmm}）`;
+        renderApp();
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = "⚠️ 同步失敗，暫顯示預設資料";
+        alert("讀取 Google 試算表失敗：\n" + err.message + "\n\n請確認試算表共用權限已設為「知道連結的任何人皆可檢視／編輯」，且分頁名稱為「每日行程」與「飯店清單」。");
+        renderApp();
+      }
+    }
+
+    function getStatusMeta(status) {
+      if (status.includes("最終")) return { rank: 0, rowClass: "status-final", pillClass: "final", label: status };
+      if (status.includes("喜歡")) return { rank: 1, rowClass: "status-like", pillClass: "like", label: status };
+      if (status.includes("淘汰")) return { rank: 3, rowClass: "status-drop", pillClass: "drop", label: status };
+      return { rank: 2, rowClass: "", pillClass: "", label: "" };
+    }
+
+    function renderApp() {
+      // Group itinerary by day in order of appearance
+      const dayMap = new Map();
+      stateItinerary.forEach(item => {
+        if (!dayMap.has(item.day)) {
+          dayMap.set(item.day, {
+            day: item.day,
+            title: item.title,
+            summary: item.summary,
+            spots: [],
+            transport: [],
+            meals: [],
+            cafes: []
+          });
+        }
+        const group = dayMap.get(item.day);
+        if (!group.title && item.title) group.title = item.title;
+        if (!group.summary && item.summary) group.summary = item.summary;
+
+        const t = item.type;
+        if (t.includes("交通")) group.transport.push(item);
+        else if (t.includes("正餐") || t.includes("餐廳")) group.meals.push(item);
+        else if (t.includes("咖啡") || t.includes("點心") || t.includes("酒吧")) group.cafes.push(item);
+        else group.spots.push(item);
+      });
+
+      const daysList = Array.from(dayMap.values());
+
+      // Render tabs
+      const tabsEl = document.getElementById("dayTabs");
+      const tabItems = [
+        { key: "all", label: "全部總覽" },
+        { key: "stay", label: "住宿＆交通" },
+        ...daysList.map(d => ({ key: d.day, label: d.day }))
+      ];
+      tabsEl.innerHTML = tabItems.map(t =>
+        `<button type="button" class="tab-btn ${currentFilter === t.key ? "active" : ""}" data-filter="${escapeHtml(t.key)}">${escapeHtml(t.label)}</button>`
+      ).join("");
+
+      tabsEl.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          currentFilter = btn.dataset.filter;
+          renderApp();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      });
+
+      // Render hotels (sorted: 最終入住 -> 喜歡 -> 候選 -> 淘汰)
+      const sortedHotels = [...stateHotels].sort((a, b) => getStatusMeta(a.status).rank - getStatusMeta(b.status).rank);
+      const visibleHotels = hideDroppedHotels
+        ? sortedHotels.filter(h => !h.status.includes("淘汰"))
+        : sortedHotels;
+
+      const hotelsHtml = visibleHotels.map(h => {
+        const meta = getStatusMeta(h.status);
+        const pillHtml = meta.label ? `<span class="status-pill ${meta.pillClass}">${escapeHtml(meta.label)}</span>` : "";
+        const noteHtml = h.note ? `<div class="hotel-note">💬 ${escapeHtml(h.note)}</div>` : "";
+        return `
+          <div class="hotel-row ${meta.rowClass}">
+            <div class="hotel-left">
+              <a class="hotel-name-link" href="${bookingUrl(h.query)}" target="_blank" rel="noopener noreferrer">
+                <span class="hotel-idx">${escapeHtml(h.id)}</span>
+                <span class="hotel-text">${escapeHtml(h.name)}</span>
+                ${pillHtml}
+                <span class="booking-tag">Booking ↗</span>
+              </a>
+              ${noteHtml}
+            </div>
+            <a class="hotel-map-btn" href="${gmapUrl(h.query)}" target="_blank" rel="noopener noreferrer">📍地圖</a>
+          </div>`;
+      }).join("");
+
+      const stayHidden = (currentFilter !== "all" && currentFilter !== "stay") ? "hidden" : "";
+      let mainHtml = `
+      <section class="card ${stayHidden}">
         <div class="stay-title">🏨 住宿區域推薦：美溪沙灘（My Khe Beach / 福美區）</div>
         <div class="info-box" style="margin-bottom: 12px;">
           <ul>
@@ -500,670 +907,165 @@
           </ul>
         </div>
 
-        <div class="section-label">🛏️ 候選飯店挑選清單（共 24 間・點飯店名直連 Booking.com）</div>
-        <div class="hotel-list">
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=Awaken%20Da%20Nang%20Hotel" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">01</span>
-              <span class="hotel-text">Awaken Da Nang Hotel</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=Awaken%20Da%20Nang%20Hotel" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=TUI%20BLUE%20Han%20River%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">02</span>
-              <span class="hotel-text">TUI BLUE Han River</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=TUI%20BLUE%20Han%20River%20Da%20Nang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=N%20House%20Apartment%20Danang%20Beach" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">03</span>
-              <span class="hotel-text">N House Apartment Danang Beach</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=N%20House%20Apartment%20Danang%20Beach" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=Chi%20House%20Danang%20Hotel%20and%20Apartment" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">04</span>
-              <span class="hotel-text">Chi House Danang Hotel and Apartment</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=Chi%20House%20Danang%20Hotel%20and%20Apartment" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=Casa%20Rosa%20Apartment%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">05</span>
-              <span class="hotel-text">Casa Rosa Apartment</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=Casa%20Rosa%20Apartment%20Da%20Nang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=Seascape%20Holiday%20Home%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">06</span>
-              <span class="hotel-text">Seascape Holiday Home</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=Seascape%20Holiday%20Home%20Da%20Nang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=H%26M%20Tropical%20Stay%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">07</span>
-              <span class="hotel-text">H&M Tropical Stay</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=H%26M%20Tropical%20Stay%20Da%20Nang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=El%20Mulato%20Hotel%20%26%20Apartment%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">08</span>
-              <span class="hotel-text">El Mulato Hotel & Apartment</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=El%20Mulato%20Hotel%20%26%20Apartment%20Da%20Nang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=PHUC%20LONG%20LUXURY%20Hotel%20Danang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">09</span>
-              <span class="hotel-text">PHUC LONG LUXURY Hotel Danang</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=PHUC%20LONG%20LUXURY%20Hotel%20Danang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=Tam%20House%20Villa%20Hotel%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">10</span>
-              <span class="hotel-text">潭屋別墅酒店（Tam House Villa Hotel）</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=Tam%20House%20Villa%20Hotel%20Da%20Nang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=PAMA%20Boutique%20Hotel%20%26%20Bistro%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">11</span>
-              <span class="hotel-text">PAMA Boutique Hotel & Bistro</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=PAMA%20Boutique%20Hotel%20%26%20Bistro%20Da%20Nang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=Salmalia%20Boutique%20Hotel%20%26%20Spa%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">12</span>
-              <span class="hotel-text">Salmalia Boutique Hotel & Spa</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=Salmalia%20Boutique%20Hotel%20%26%20Spa%20Da%20Nang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=DLG%20Hotel%20Danang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">13</span>
-              <span class="hotel-text">DLG 峴港酒店（DLG Hotel Danang）</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=DLG%20Hotel%20Danang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=Animor%20Green%20Home%20Villa%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">14</span>
-              <span class="hotel-text">Animor Green Home Villa Da Nang</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=Animor%20Green%20Home%20Villa%20Da%20Nang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=Pavilion%20Hotel%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">15</span>
-              <span class="hotel-text">Pavilion Hotel Da Nang</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=Pavilion%20Hotel%20Da%20Nang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=Ocean%20Garden%20Boutique%20Da%20Nang%20by%20Haviland" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">16</span>
-              <span class="hotel-text">Ocean Garden Boutique Da Nang by Haviland</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=Ocean%20Garden%20Boutique%20Da%20Nang%20by%20Haviland" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=Ruby%20Star%20Da%20Nang%20Central%20My%20Khe%20Beach" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">17</span>
-              <span class="hotel-text">Ruby Star Da Nang - Central My Khe Beach</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=Ruby%20Star%20Da%20Nang%20Central%20My%20Khe%20Beach" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=White%20Sand%20Boutique%20Hotel%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">18</span>
-              <span class="hotel-text">White Sand Boutique Hotel</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=White%20Sand%20Boutique%20Hotel%20Da%20Nang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=Century%20Hotel%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">19</span>
-              <span class="hotel-text">Century Hotel Da Nang</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=Century%20Hotel%20Da%20Nang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=The%20Dream%20Suite%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">20</span>
-              <span class="hotel-text">The Dream Suite</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=The%20Dream%20Suite%20Da%20Nang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=Canvas%20Danang%20Beach%20Hotel" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">21</span>
-              <span class="hotel-text">Canvas Danang Beach Hotel</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=Canvas%20Danang%20Beach%20Hotel" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=Sharon%20Hotel%20and%20Apartment%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">22</span>
-              <span class="hotel-text">Sharon Hotel and Apartment</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=Sharon%20Hotel%20and%20Apartment%20Da%20Nang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=Royal%20Lotus%20Hotel%20Danang" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">23</span>
-              <span class="hotel-text">Royal Lotus Hotel Danang</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=Royal%20Lotus%20Hotel%20Danang" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
-          <div class="hotel-row">
-            <a class="hotel-name-link" href="https://www.booking.com/searchresults.zh-tw.html?ss=Maximilan%20Danang%20Beach%20Hotel" target="_blank" rel="noopener noreferrer">
-              <span class="hotel-idx">24</span>
-              <span class="hotel-text">Maximilan Danang Beach Hotel</span>
-              <span class="booking-tag">Booking ↗</span>
-            </a>
-            <a class="hotel-map-btn" href="https://www.google.com/maps/search/?api=1&query=Maximilan%20Danang%20Beach%20Hotel" target="_blank" rel="noopener noreferrer" title="在 Google Maps 查看位置">📍地圖</a>
-          </div>
+        <div class="section-label">
+          <span>🛏️ 候選飯店清單（${visibleHotels.length} 間・點飯店名連 Booking）</span>
+          <label class="filter-toggle">
+            <input type="checkbox" id="chkHideDrop" ${hideDroppedHotels ? "checked" : ""} /> 隱藏淘汰
+          </label>
         </div>
+        <div class="hotel-list">${hotelsHtml}</div>
 
-        <div class="section-label">🚗 交通實務提醒</div>
+        <div class="section-label"><span>🚗 交通實務提醒</span></div>
         <div class="note-box">
           <ul>
             <li><strong>美山聖地（Day 3）：</strong>單趟約 65–70 分鐘且當地偏僻、回程難叫 Grab，建議預訂半日包車（含司機等候）。</li>
             <li><strong>山茶半島＋迦南島＋會安（Day 4）：</strong>沿海岸線一路往南不走回頭路，建議全天包車最輕鬆省時。</li>
           </ul>
         </div>
-      </section>
+      </section>`;
 
-      <!-- Day 1 -->
-      <section class="card card-day1">
-        <div class="day-header">
-          <span class="day-pill">Day 1</span>
-          <span class="day-title">抵達、訂製奧黛與海濱夜景</span>
-        </div>
-        <div class="summary-text">
-          中午抵達放完行李後，下午直奔漢市場訂製奧黛與採買；等待取件期間步行至 APEC 雕塑公園拍照，傍晚回美溪沙灘踩沙看海，晚間欣賞龍橋夜景。
-        </div>
+      // Render each Day card
+      daysList.forEach(d => {
+        const hiddenCls = (currentFilter !== "all" && currentFilter !== d.day) ? "hidden" : "";
 
-        <div class="section-label">📍 當日行程與備註</div>
-        <div class="place-list">
-          <div class="spot-item">
-            <a class="map-link spot has-note" href="https://www.google.com/maps/search/?api=1&query=Han%20Market%20Da%20Nang%20Vietnam" target="_blank" rel="noopener noreferrer">
-              <div class="map-link-info">
-                <span class="map-link-name">漢市場（Cho Han）</span>
-                <span class="map-link-desc">二樓量身訂製奧黛、採買當地伴手禮</span>
-              </div>
-              <span class="nav-chip">📍 導航</span>
-            </a>
-            <div class="spot-note"><strong>🛍️ 採買／活動備註：</strong>推薦找「143 號攤位」買腰果與芒果乾；二樓量身訂製奧黛約 2 小時可取件，隔天起即可穿去拍照。</div>
+        const spotsHtml = d.spots.map(s => {
+          const hasNote = Boolean(s.note);
+          return `
+            <div class="spot-item">
+              <a class="map-link spot ${hasNote ? "has-note" : ""}" href="${gmapUrl(s.query)}" target="_blank" rel="noopener noreferrer">
+                <div class="map-link-info">
+                  <span class="map-link-name">${escapeHtml(s.name)}</span>
+                  ${s.desc ? `<span class="map-link-desc">${escapeHtml(s.desc)}</span>` : ""}
+                </div>
+                <span class="nav-chip">📍 導航</span>
+              </a>
+              ${hasNote ? `<div class="spot-note">${escapeHtml(s.note)}</div>` : ""}
+            </div>`;
+        }).join("");
+
+        const transportHtml = d.transport.length > 0 ? `
+          <div class="section-label"><span>🚗 交通方式</span></div>
+          <div class="info-box">
+            <ul>${d.transport.map(t => `<li>${escapeHtml(t.name)}${t.desc ? "（" + escapeHtml(t.desc) + "）" : ""}</li>`).join("")}</ul>
+          </div>` : "";
+
+        const mealsHtml = d.meals.length > 0 ? `
+          <div class="section-label"><span>🍽️ 推薦美食・正餐／餐廳</span></div>
+          <div class="place-list">
+            ${d.meals.map(m => `
+              <a class="map-link food" href="${gmapUrl(m.query)}" target="_blank" rel="noopener noreferrer">
+                <div class="map-link-info">
+                  <span class="map-link-name">${escapeHtml(m.name)}</span>
+                  ${m.desc ? `<span class="map-link-desc">${escapeHtml(m.desc)}</span>` : ""}
+                </div>
+                <span class="nav-chip">🍽️ 導航</span>
+              </a>`).join("")}
+          </div>` : "";
+
+        const cafesHtml = d.cafes.length > 0 ? `
+          <div class="section-label"><span>☕ 推薦美食・咖啡廳／點心</span></div>
+          <div class="place-list">
+            ${d.cafes.map(c => `
+              <a class="map-link cafe" href="${gmapUrl(c.query)}" target="_blank" rel="noopener noreferrer">
+                <div class="map-link-info">
+                  <span class="map-link-name">${escapeHtml(c.name)}</span>
+                  ${c.desc ? `<span class="map-link-desc">${escapeHtml(c.desc)}</span>` : ""}
+                </div>
+                <span class="nav-chip">☕ 導航</span>
+              </a>`).join("")}
+          </div>` : "";
+
+        mainHtml += `
+        <section class="card ${hiddenCls}">
+          <div class="day-header">
+            <span class="day-pill">${escapeHtml(d.day)}</span>
+            <span class="day-title">${escapeHtml(d.title)}</span>
           </div>
-          <div class="spot-item">
-            <a class="map-link spot" href="https://www.google.com/maps/search/?api=1&query=APEC%20Park%20Da%20Nang%20Vietnam" target="_blank" rel="noopener noreferrer">
-              <div class="map-link-info">
-                <span class="map-link-name">APEC 雕塑公園</span>
-                <span class="map-link-desc">純白流線建築美拍，等待奧黛製作時順遊</span>
-              </div>
-              <span class="nav-chip">📍 導航</span>
-            </a>
-          </div>
-          <div class="spot-item">
-            <a class="map-link spot" href="https://www.google.com/maps/search/?api=1&query=My%20Khe%20Beach%20Da%20Nang%20Vietnam" target="_blank" rel="noopener noreferrer">
-              <div class="map-link-info">
-                <span class="map-link-name">美溪沙灘（My Khe Beach）</span>
-                <span class="map-link-desc">傍晚踩沙看海放鬆</span>
-              </div>
-              <span class="nav-chip">📍 導航</span>
-            </a>
-          </div>
-          <div class="spot-item">
-            <a class="map-link spot has-note" href="https://www.google.com/maps/search/?api=1&query=Dragon%20Bridge%20Da%20Nang%20Vietnam" target="_blank" rel="noopener noreferrer">
-              <div class="map-link-info">
-                <span class="map-link-name">峴港龍橋（Dragon Bridge）</span>
-                <span class="map-link-desc">欣賞漢江沿岸夜景</span>
-              </div>
-              <span class="nav-chip">📍 導航</span>
-            </a>
-            <div class="spot-note"><strong>🔥 推薦活動：</strong>週末（六、日）21:00 有噴火噴水秀，建議提早卡位。</div>
-          </div>
-        </div>
-
-        <div class="section-label">🚗 交通方式</div>
-        <div class="info-box">
-          <ul>
-            <li>機場至飯店：Grab 約 15 分鐘</li>
-            <li>飯店至漢市場／龍橋：Grab 約 8–12 分鐘</li>
-          </ul>
-        </div>
-
-        <div class="section-label">🍽️ 推薦美食・正餐／餐廳</div>
-        <div class="place-list">
-          <a class="map-link food" href="https://www.google.com/maps/search/?api=1&query=Pizza%204P%27s%20Hoang%20Van%20Thu%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Pizza 4P's Hoàng Văn Thụ</span>
-              <span class="map-link-desc">超人氣自製起司窯烤披薩（建議先訂位）</span>
-            </div>
-            <span class="nav-chip">🍽️ 導航</span>
-          </a>
-          <a class="map-link food" href="https://www.google.com/maps/search/?api=1&query=Bep%20Cuon%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Bếp Cuốn Đà Nẵng</span>
-              <span class="map-link-desc">精緻越南家常菜、越式生春捲</span>
-            </div>
-            <span class="nav-chip">🍽️ 導航</span>
-          </a>
-        </div>
-
-        <div class="section-label">☕ 推薦美食・咖啡廳／點心</div>
-        <div class="place-list">
-          <a class="map-link cafe" href="https://www.google.com/maps/search/?api=1&query=Ut%20Tich%20Cafe%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Út Tịch Café</span>
-              <span class="map-link-desc">復古懷舊越式風格咖啡</span>
-            </div>
-            <span class="nav-chip">☕ 導航</span>
-          </a>
-          <a class="map-link cafe" href="https://www.google.com/maps/search/?api=1&query=Cong%20Ca%20Phe%20Bach%20Dang%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Cộng Cà Phê - Bạch Đằng</span>
-              <span class="map-link-desc">人氣招牌椰子咖啡、漢江河岸景觀</span>
-            </div>
-            <span class="nav-chip">☕ 導航</span>
-          </a>
-        </div>
-      </section>
-
-      <!-- Day 2 -->
-      <section class="card card-day2">
-        <div class="day-header">
-          <span class="day-pill">Day 2</span>
-          <span class="day-title">雲端歐風與海濱海鮮夜</span>
-        </div>
-        <div class="summary-text">
-          上午搭單軌纜車登頂，造訪黃金佛手橋、法國村與空中花園（停留約 5–6 小時）；傍晚下山回美溪沙灘享用活海鮮，晚間可回飯店泳池休息或順路逛山茶夜市。
-        </div>
-
-        <div class="section-label">📍 當日行程與備註</div>
-        <div class="place-list">
-          <div class="spot-item">
-            <a class="map-link spot has-note" href="https://www.google.com/maps/search/?api=1&query=Sun%20World%20Ba%20Na%20Hills%20Da%20Nang%20Vietnam" target="_blank" rel="noopener noreferrer">
-              <div class="map-link-info">
-                <span class="map-link-name">巴拿山太陽世界（Sun World Ba Na Hills）</span>
-                <span class="map-link-desc">黃金佛手橋、法國村、空中花園與酒窖</span>
-              </div>
-              <span class="nav-chip">📍 導航</span>
-            </a>
-            <div class="spot-note"><strong>✨ 推薦活動：</strong>建議 08:30 前出發避開團客，穿奧黛在法國村拍照非常出片。</div>
-          </div>
-          <div class="spot-item">
-            <a class="map-link spot has-note" href="https://www.google.com/maps/search/?api=1&query=Son%20Tra%20Night%20Market%20Da%20Nang%20Vietnam" target="_blank" rel="noopener noreferrer">
-              <div class="map-link-info">
-                <span class="map-link-name">山茶夜市（Chợ Đêm Sơn Trà，選配）</span>
-                <span class="map-link-desc">鄰近龍橋的在地觀光夜市</span>
-              </div>
-              <span class="nav-chip">📍 導航</span>
-            </a>
-            <div class="spot-note"><strong>🛍️ 採買／活動備註：</strong>有許多紀念品、藤編小物、炭烤小吃與熱帶水果攤可邊吃邊逛。</div>
-          </div>
-        </div>
-
-        <div class="section-label">🚗 交通方式</div>
-        <div class="info-box">
-          <ul>
-            <li>飯店至巴拿山：Grab 或包車來回，單趟約 45 分鐘</li>
-            <li>海灘周邊／夜市：Grab 約 5–10 分鐘</li>
-          </ul>
-        </div>
-
-        <div class="section-label">🍽️ 推薦美食・正餐／餐廳</div>
-        <div class="place-list">
-          <a class="map-link food" href="https://www.google.com/maps/search/?api=1&query=Beer%20Plaza%20Ba%20Na%20Hills" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">巴拿山園區自助餐（Arapang / Beer Plaza）</span>
-              <span class="map-link-desc">園區內用餐最方便省時</span>
-            </div>
-            <span class="nav-chip">🍽️ 導航</span>
-          </a>
-          <a class="map-link food" href="https://www.google.com/maps/search/?api=1&query=Hai%20San%20Be%20Man%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Hải Sản Bé Mặn</span>
-              <span class="map-link-desc">美溪沙灘超人氣平價活海鮮熱炒</span>
-            </div>
-            <span class="nav-chip">🍽️ 導航</span>
-          </a>
-          <a class="map-link food" href="https://www.google.com/maps/search/?api=1&query=Hai%20San%20Nam%20Danh%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Hải Sản Năm Đảnh</span>
-              <span class="map-link-desc">巷弄隱密高 CP 值海鮮</span>
-            </div>
-            <span class="nav-chip">🍽️ 導航</span>
-          </a>
-        </div>
-
-        <div class="section-label">☕ 推薦美食・咖啡廳／點心</div>
-        <div class="place-list">
-          <a class="map-link cafe" href="https://www.google.com/maps/search/?api=1&query=Son%20Tra%20Night%20Market%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Chợ Đêm Sơn Trà（山茶夜市小吃）</span>
-              <span class="map-link-desc">越式烤米紙薄餅、炭烤海鮮點心與現打果汁</span>
-            </div>
-            <span class="nav-chip">☕ 導航</span>
-          </a>
-          <a class="map-link cafe" href="https://www.google.com/maps/search/?api=1&query=43%20Factory%20Coffee%20Roaster%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">43 Factory Coffee Roaster</span>
-              <span class="map-link-desc">美溪沙灘周邊人氣質感精品手沖咖啡館</span>
-            </div>
-            <span class="nav-chip">☕ 導航</span>
-          </a>
-        </div>
-      </section>
-
-      <!-- Day 3 -->
-      <section class="card card-day3">
-        <div class="day-header">
-          <span class="day-pill">Day 3</span>
-          <span class="day-title">千年古蹟與海邊微醺放空</span>
-        </div>
-        <div class="summary-text">
-          上午探訪世界遺產占婆紅磚遺跡；中午回市區用餐小憩，下午在海灘俱樂部躺椅吹海風看日落，晚上漫步充滿異國風情的安上特區逛小店、吃晚餐或小酌。
-        </div>
-
-        <div class="section-label">📍 當日行程與備註</div>
-        <div class="place-list">
-          <div class="spot-item">
-            <a class="map-link spot has-note" href="https://www.google.com/maps/search/?api=1&query=My%20Son%20Sanctuary%20Quang%20Nam%20Vietnam" target="_blank" rel="noopener noreferrer">
-              <div class="map-link-info">
-                <span class="map-link-name">美山聖地（My Son Sanctuary）</span>
-                <span class="map-link-desc">世界文化遺產、占婆王國紅磚古蹟群</span>
-              </div>
-              <span class="nav-chip">📍 導航</span>
-            </a>
-            <div class="spot-note"><strong>✨ 推薦活動：</strong>園區遮蔽較少，建議 08:00 出發避開正午酷熱；園區內定時有占婆傳統舞蹈表演。</div>
-          </div>
-          <div class="spot-item">
-            <a class="map-link spot" href="https://www.google.com/maps/search/?api=1&query=Esco%20Beach%20Bar%20Lounge%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <div class="map-link-info">
-                <span class="map-link-name">海景 Beach Club（Esco Beach）</span>
-                <span class="map-link-desc">午後海灘躺椅放空、吹海風看日落</span>
-              </div>
-              <span class="nav-chip">📍 導航</span>
-            </a>
-          </div>
-          <div class="spot-item">
-            <a class="map-link spot" href="https://www.google.com/maps/search/?api=1&query=An%20Thuong%20Tourist%20Street%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <div class="map-link-info">
-                <span class="map-link-name">安上特區（An Thuong）</span>
-                <span class="map-link-desc">異國風情街道散策、文青小店與餐酒館</span>
-              </div>
-              <span class="nav-chip">📍 導航</span>
-            </a>
-          </div>
-          <div class="spot-item">
-            <a class="map-link spot has-note" href="https://www.google.com/maps/search/?api=1&query=Han%20River%20Port%20Da%20Nang%20Cruise" target="_blank" rel="noopener noreferrer">
-              <div class="map-link-info">
-                <span class="map-link-name">漢江遊船（Han River Cruise，晚間選配）</span>
-                <span class="map-link-desc">吹微風欣賞漢江兩岸燈火夜景</span>
-              </div>
-              <span class="nav-chip">📍 導航</span>
-            </a>
-            <div class="spot-note"><strong>✨ 晚間選配：</strong>若晚上不想跑酒吧，可改搭漢江遊船悠閒賞夜景。</div>
-          </div>
-        </div>
-
-        <div class="section-label">🚗 交通方式</div>
-        <div class="info-box">
-          <ul>
-            <li>飯店至美山聖地：建議半日包車來回（單趟約 65–70 分鐘）</li>
-            <li>下午市區各點：徒步或 Grab 均在 10 分鐘內</li>
-          </ul>
-        </div>
-
-        <div class="section-label">🍽️ 推薦美食・正餐／餐廳</div>
-        <div class="place-list">
-          <a class="map-link food" href="https://www.google.com/maps/search/?api=1&query=Mi%20Quang%20Ba%20Mua%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Mì Quảng Bà Mua</span>
-              <span class="map-link-desc">道地峴港特色廣南麵</span>
-            </div>
-            <span class="nav-chip">🍽️ 導航</span>
-          </a>
-          <a class="map-link food" href="https://www.google.com/maps/search/?api=1&query=Com%20Nha%20Linh%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Cơm Nhà Linh</span>
-              <span class="map-link-desc">古早味越南家庭料理砂鍋飯</span>
-            </div>
-            <span class="nav-chip">🍽️ 導航</span>
-          </a>
-        </div>
-
-        <div class="section-label">☕ 推薦美食・咖啡廳／點心</div>
-        <div class="place-list">
-          <a class="map-link cafe" href="https://www.google.com/maps/search/?api=1&query=Roots%20Plant-based%20Cafe%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Roots Plant-based Cafe</span>
-              <span class="map-link-desc">安上特區健康果昔碗、早午餐與輕食點心</span>
-            </div>
-            <span class="nav-chip">☕ 導航</span>
-          </a>
-          <a class="map-link cafe" href="https://www.google.com/maps/search/?api=1&query=Esco%20Beach%20Bar%20Lounge%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Esco Beach Bar Lounge</span>
-              <span class="map-link-desc">海灘躺椅調酒、下午茶與輕食</span>
-            </div>
-            <span class="nav-chip">☕ 導航</span>
-          </a>
-          <a class="map-link cafe" href="https://www.google.com/maps/search/?api=1&query=The%20Craftsman%20Cocktail%20Bar%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">The Craftsman Cocktail Bar</span>
-              <span class="map-link-desc">高質感隱密雞尾酒酒吧</span>
-            </div>
-            <span class="nav-chip">☕ 導航</span>
-          </a>
-        </div>
-      </section>
-
-      <!-- Day 4 -->
-      <section class="card card-day4">
-        <div class="day-header">
-          <span class="day-pill">Day 4</span>
-          <span class="day-title">山海全景、椰林桶船與燈籠古城</span>
-        </div>
-        <div class="summary-text">
-          上午前往山茶半島遠眺峴港灣與巨型白玉觀音；中午沿海岸線往南至迦南島搭竹簍船；下午進會安古鎮喝咖啡避暑、逛日本橋與福建會館，入夜搭木船放水燈。
-        </div>
-
-        <div class="section-label">📍 當日行程與備註</div>
-        <div class="place-list">
-          <div class="spot-item">
-            <a class="map-link spot" href="https://www.google.com/maps/search/?api=1&query=Linh%20Ung%20Pagoda%20Son%20Tra%20Peninsula%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-              <div class="map-link-info">
-                <span class="map-link-name">山茶半島・靈應寺（Linh Ung Pagoda）</span>
-                <span class="map-link-desc">巨型白玉觀音像、俯瞰整座月牙形峴港灣</span>
-              </div>
-              <span class="nav-chip">📍 導航</span>
-            </a>
-          </div>
-          <div class="spot-item">
-            <a class="map-link spot has-note" href="https://www.google.com/maps/search/?api=1&query=Bay%20Mau%20Coconut%20Forest%20Cam%20Thanh%20Hoi%20An" target="_blank" rel="noopener noreferrer">
-              <div class="map-link-info">
-                <span class="map-link-name">迦南島椰林桶船（Cam Thanh）</span>
-                <span class="map-link-desc">體驗水椰林竹簍船與水上捕蟹</span>
-              </div>
-              <span class="nav-chip">📍 導航</span>
-            </a>
-            <div class="spot-note"><strong>✨ 推薦活動：</strong>搭桶船可請船夫表演水上旋轉（怕暈可提前告知船夫）。</div>
-          </div>
-          <div class="spot-item">
-            <a class="map-link spot has-note" href="https://www.google.com/maps/search/?api=1&query=Hoi%20An%20Ancient%20Town%20Vietnam" target="_blank" rel="noopener noreferrer">
-              <div class="map-link-info">
-                <span class="map-link-name">會安古鎮（Hoi An Ancient Town）</span>
-                <span class="map-link-desc">日本橋、福建會館與燈籠古街夜景</span>
-              </div>
-              <span class="nav-chip">📍 導航</span>
-            </a>
-            <div class="spot-note"><strong>🏮 推薦活動＆採買：</strong>入夜後必搭手搖木船在秋盆河放水燈祈福；古城內適合採買手工竹編包、藤編杯墊與特色布藝燈籠。</div>
-          </div>
-        </div>
-
-        <div class="section-label">🚗 交通方式</div>
-        <div class="info-box">
-          <ul>
-            <li>建議全天包車（或分段 Grab）：</li>
-            <li>飯店 ➔ 靈應寺（約 20 分鐘）➔ 迦南島（約 50 分鐘）➔ 會安古鎮（約 15 分鐘）➔ 飯店（約 40 分鐘）</li>
-          </ul>
-        </div>
-
-        <div class="section-label">🍽️ 推薦美食・正餐／餐廳</div>
-        <div class="place-list">
-          <a class="map-link food" href="https://www.google.com/maps/search/?api=1&query=Quan%20An%20Co%20Ba%20Hoi%20An" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Quán Ăn Cô Ba</span>
-              <span class="map-link-desc">道地會安特色料理</span>
-            </div>
-            <span class="nav-chip">🍽️ 導航</span>
-          </a>
-          <a class="map-link food" href="https://www.google.com/maps/search/?api=1&query=Morning%20Glory%20Original%20Hoi%20An" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Morning Glory Original</span>
-              <span class="map-link-desc">經典會安高樓麵（Cao Lau）、白玫瑰炸餛飩</span>
-            </div>
-            <span class="nav-chip">🍽️ 導航</span>
-          </a>
-        </div>
-
-        <div class="section-label">☕ 推薦美食・咖啡廳／點心</div>
-        <div class="place-list">
-          <a class="map-link cafe" href="https://www.google.com/maps/search/?api=1&query=Madam%20Khanh%20The%20Banh%20Mi%20Queen%20Hoi%20An" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Madam Khánh - The Banh Mi Queen</span>
-              <span class="map-link-desc">會安天花板級越式法國麵包（點心／輕食）</span>
-            </div>
-            <span class="nav-chip">☕ 導航</span>
-          </a>
-          <a class="map-link cafe" href="https://www.google.com/maps/search/?api=1&query=Faifo%20Coffee%20Hoi%20An" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Faifo Coffee</span>
-              <span class="map-link-desc">古城屋頂露台景觀咖啡</span>
-            </div>
-            <span class="nav-chip">☕ 導航</span>
-          </a>
-          <a class="map-link cafe" href="https://www.google.com/maps/search/?api=1&query=Mot%20Hoi%20An" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Mot Hoi An</span>
-              <span class="map-link-desc">人氣清爽消暑蓮花草本茶</span>
-            </div>
-            <span class="nav-chip">☕ 導航</span>
-          </a>
-        </div>
-      </section>
-
-      <!-- Day 5 -->
-      <section class="card card-day5">
-        <div class="day-header">
-          <span class="day-pill">Day 5</span>
-          <span class="day-title">最後採購與歸途</span>
-        </div>
-        <div class="summary-text">
-          悠閒享用飯店早餐退房，前往樂天超市進行最後伴手禮補貨，結束後直接搭車前往機場搭機返程。
-        </div>
-
-        <div class="section-label">📍 當日行程與備註</div>
-        <div class="place-list">
-          <div class="spot-item">
-            <a class="map-link spot has-note" href="https://www.google.com/maps/search/?api=1&query=Lotte%20Mart%20Da%20Nang%20Vietnam" target="_blank" rel="noopener noreferrer">
-              <div class="map-link-info">
-                <span class="map-link-name">樂天超市（Lotte Mart Da Nang）</span>
-                <span class="map-link-desc">返台前最後伴手禮一站式採購</span>
-              </div>
-              <span class="nav-chip">📍 導航</span>
-            </a>
-            <div class="spot-note"><strong>🛍️ 採買建議：</strong>必買 Legend／G7 咖啡、綠豆糕、Vifon 河粉泡麵、腰果與果乾；商場內提供免費紙箱可打包托運。</div>
-          </div>
-          <div class="spot-item">
-            <a class="map-link spot" href="https://www.google.com/maps/search/?api=1&query=Da%20Nang%20International%20Airport" target="_blank" rel="noopener noreferrer">
-              <div class="map-link-info">
-                <span class="map-link-name">峴港國際機場（DAD）</span>
-                <span class="map-link-desc">搭機返程</span>
-              </div>
-              <span class="nav-chip">📍 導航</span>
-            </a>
-          </div>
-        </div>
-
-        <div class="section-label">🚗 交通方式</div>
-        <div class="info-box">
-          <ul>
-            <li>飯店至樂天超市：Grab 約 12 分鐘</li>
-            <li>樂天超市至機場：Grab 約 15 分鐘</li>
-          </ul>
-        </div>
-
-        <div class="section-label">🍽️ 推薦美食・正餐／餐廳</div>
-        <div class="place-list">
-          <a class="map-link food" href="https://www.google.com/maps/search/?api=1&query=Pho%20Bac%20Hai%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Phở Bắc Hải Đài Trang</span>
-              <span class="map-link-desc">湯頭清甜道地北越牛腩河粉</span>
-            </div>
-            <span class="nav-chip">🍽️ 導航</span>
-          </a>
-        </div>
-
-        <div class="section-label">☕ 推薦美食・咖啡廳／點心</div>
-        <div class="place-list">
-          <a class="map-link cafe" href="https://www.google.com/maps/search/?api=1&query=Highlands%20Coffee%20Lotte%20Mart%20Da%20Nang" target="_blank" rel="noopener noreferrer">
-            <div class="map-link-info">
-              <span class="map-link-name">Highlands Coffee</span>
-              <span class="map-link-desc">越南連鎖招牌金蓮子茶、冰滴咖啡與甜點</span>
-            </div>
-            <span class="nav-chip">☕ 導航</span>
-          </a>
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      峴港 5天4夜行程隨身手冊・點擊景點開啟 Google Maps・點擊飯店開啟 Booking.com
-    </footer>
-  </div>
-
-  <!-- Optional scroll-to-top enhancement when JS is available -->
-  <script>
-    document.querySelectorAll('.tab-radio').forEach(radio => {
-      radio.addEventListener('change', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+          ${d.summary ? `<div class="summary-text">${escapeHtml(d.summary)}</div>` : ""}
+          <div class="section-label"><span>📍 當日行程與備註</span></div>
+          <div class="place-list">${spotsHtml}</div>
+          ${transportHtml}
+          ${mealsHtml}
+          ${cafesHtml}
+        </section>`;
       });
+
+      document.getElementById("appMain").innerHTML = mainHtml;
+
+      const chk = document.getElementById("chkHideDrop");
+      if (chk) {
+        chk.addEventListener("change", (e) => {
+          hideDroppedHotels = e.target.checked;
+          renderApp();
+        });
+      }
+    }
+
+    // Modal & Toolbar Controls
+    const modal = document.getElementById("setupModal");
+    const sheetInput = document.getElementById("sheetUrlInput");
+    const shareBox = document.getElementById("shareBox");
+    const shareUrlText = document.getElementById("shareUrlText");
+
+    function updateSharePreview(sheetId) {
+      if (sheetId && window.location.protocol.startsWith("http")) {
+        const base = window.location.origin + window.location.pathname;
+        const shareUrl = `${base}?sheet=${sheetId}`;
+        shareUrlText.textContent = shareUrl;
+        shareBox.classList.add("show");
+      } else {
+        shareBox.classList.remove("show");
+      }
+    }
+
+    document.getElementById("btnSetup").addEventListener("click", () => {
+      const activeId = getActiveSheetId();
+      sheetInput.value = activeId ? `https://docs.google.com/spreadsheets/d/${activeId}/edit` : "";
+      updateSharePreview(activeId);
+      modal.classList.add("open");
     });
+
+    document.getElementById("btnCancelModal").addEventListener("click", () => {
+      modal.classList.remove("open");
+    });
+
+    document.getElementById("btnClearSheet").addEventListener("click", () => {
+      safeStore.remove("danang_sheet_url");
+      const url = new URL(window.location.href);
+      url.searchParams.delete("sheet");
+      window.history.replaceState({}, "", url.toString());
+      modal.classList.remove("open");
+      syncFromGoogleSheet();
+    });
+
+    document.getElementById("btnSaveSheet").addEventListener("click", () => {
+      const id = extractSheetId(sheetInput.value);
+      if (!id) {
+        alert("請貼上正確的 Google 試算表網址（需包含 /spreadsheets/d/...）");
+        return;
+      }
+      safeStore.set("danang_sheet_url", sheetInput.value.trim());
+      updateSharePreview(id);
+      syncFromGoogleSheet();
+      if (!window.location.protocol.startsWith("http")) {
+        modal.classList.remove("open");
+      }
+    });
+
+    document.getElementById("btnCopyShare").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(shareUrlText.textContent);
+        alert("已複製網址！直接傳給旅伴點開即可同步同一份試算表。");
+      } catch {
+        prompt("請手動複製下方網址：", shareUrlText.textContent);
+      }
+    });
+
+    document.getElementById("btnRefresh").addEventListener("click", syncFromGoogleSheet);
+
+    // Initial render & sync
+    renderApp();
+    syncFromGoogleSheet();
   </script>
 </body>
 </html>
